@@ -33,3 +33,7 @@ header {
   background-color: plum;
   color: white;
 }
+
+.hide {
+  display: none;
+}

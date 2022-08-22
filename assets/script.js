@@ -1,7 +1,8 @@
 // access Start Quiz button from HTML
 const startButton = document.querySelector("#start");
 console.log(startButton);
-const questionContainerElement = document.getElementById("question-container");
+const questionElement = document.getElementById("question");
+const answerButtonsElement = document.getElementById("answer-buttons");
 
 // create variable objects for each question & possible answers
 const questions = [
@@ -17,9 +18,17 @@ const questions = [
 ];
 // click start button and activate startQuiz function(). Add event listener at bottom of file.
 // first question pops up + timer begins
+
 function startQuiz() {
   console.log("started");
-  questionContainerElement
+  const welcomePage = document.getElementById("welcome-page");
+  welcomePage.classList.remove("hide");
+}
+
+function showQuestion() {
+  questionContainerElement.remove("welcome-page");
+  const questionContainerElement =
+    document.getElementById("question-container");
 }
 
 // after user answers question, if correct screen will say "correct" and move onto next question
