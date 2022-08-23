@@ -5,10 +5,26 @@ console.log(startButton);
 //create variable for question-container from HTML that includes question and answer choices/buttons
 var questionContainerElement = document.getElementById("question-container");
 
-// //create variables for 
-// var questionElement = document.getElementById("question");
-// var answerButtonsElement = document.getElementById("answer-buttons");
+//create variable for question user must answer
+var questionElement = document.getElementById("question");
 
+//create variables for each individual button answer choice in "answer buttons" div. Gave id name to each in HTML.
+var answerOneElement = document.getElementById("answer-one");
+var answerTwoElement = document.getElementById("answer-two");
+var answerThreeElement = document.getElementById("answer-three");
+var answerFourElement = document.getElementById("answer-four");
+
+// create variable for answer button answer choices div
+var answerButtonsElement = document.getElementById("answer-buttons");
+
+// create variable for question index ()
+var questionIndex;
+
+//create variable for high score div
+var highScoreElement = document.getElementById("high-score");
+
+// create variable for question container div (which holds the question & answer choice buttons)
+var questionContainerElement = document.getElementById("question-container");
 
 // create array of question objects for each question with answers choices & correct answer
 const questions = [
@@ -18,7 +34,7 @@ const questions = [
     choiceB: "curly braces",
     choiceC: "parentheses",
     choiceD: "square brackets",
-    correctChoice: "C",
+    correctChoice: "parentheses",
   },
 
   {
@@ -64,27 +80,49 @@ function startQuiz() {
   console.log("started");
   var welcomePage = document.getElementById("welcome-page");
   welcomePage.classList.add("hide");
+  questionContainerElement.classList.remove("hide");
+  questionIndex = 0;
   showQuestion();
 }
 
-// first question pops up + timer begins
-// loop through all questions
-// after user answers question, if correct screen will say "correct" and move onto next question
-// after user answers question, if incorrect screen will say "incorrect", move onto next qusestion, AND 10 seconds will subtract from timer
+// first question pops up
 function showQuestion() {
-  var questionContainerElement = document.getElementById("question-container");
-  questionContainerElement.classList.remove("hide");
+  // timer begins
 
   //create variables for each question object in the questions array to display and save answer user selects
-  var questionOne = questions[0].question;
-  console.log(questionOne);
+  questionElement.textContent = questions[questionIndex].question;
+  answerOneElement.textContent = questions[questionIndex].choiceA;
+  answerTwoElement.textContent = questions[questionIndex].choiceB;
+  answerThreeElement.textContent = questions[questionIndex].choiceC;
+  answerFourElement.textContent = questions[questionIndex].choiceD;
+  // loop through all questions
+  // after user answers question, if correct screen will say "correct" and move onto next question
+}
 
-
-  //check if the user's choice is equal to questions[0].correctChoice, and by that we can know if they got the right answer or not
-  for (var i = 0; i < questions.length; i++) {
-    console.log(questions[i]);
+//check if the user's choice is equal to correctChoice, and by that we can know if they got the right answer or not
+function checkAnswer(event) {
+  console.log(event);
+  if (event.target.className == "btn") {
+    if (event.target.textContent == questions[questionIndex].correctChoice) {
+      console.log("correct");
+    } else {
+      console.log("incorrect");
+    }
+    questionIndex++;
+    if (questionIndex >= questions.length) {
+      endGame();
+    } else {
+      showQuestion();
+    }
   }
 }
+
+function endGame() {
+  console.log("Game has ended");
+  questionContainerElement.classList.add("hide");
+  highScoreElement.classList.remove("hide");
+}
+// after user answers question, if incorrect screen will say "incorrect", move onto next qusestion, AND 10 seconds will subtract from timer
 
 // when all questions are answered OR timer reaches 0, the game will end
 
@@ -96,3 +134,6 @@ function showQuestion() {
 
 // Add event listener to activate Start Quiz button (startButton) by going into the startQuiz function
 startButton.addEventListener("click", startQuiz);
+
+// Add event listener for answer buttons
+answerButtonsElement.addEventListener("click", checkAnswer);
