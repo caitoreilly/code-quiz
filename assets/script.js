@@ -1,11 +1,14 @@
 // create variable to access Start Quiz button
-const startButton = document.querySelector("#start");
+var startButton = document.querySelector("#start");
 console.log(startButton);
 
-//create variables
-const questionElement = document.getElementById("question");
-const answerButtonsElement = document.getElementById("answer-buttons");
-const questionContainerElement = document.getElementById("question-container");
+//create variable for question-container from HTML that includes question and answer choices/buttons
+var questionContainerElement = document.getElementById("question-container");
+
+// //create variables for 
+// var questionElement = document.getElementById("question");
+// var answerButtonsElement = document.getElementById("answer-buttons");
+
 
 // create array of question objects for each question with answers choices & correct answer
 const questions = [
@@ -59,7 +62,7 @@ const questions = [
 // when button clicked, info on welcome page will go away, leaving the page blank and ready for the first question.
 function startQuiz() {
   console.log("started");
-  const welcomePage = document.getElementById("welcome-page");
+  var welcomePage = document.getElementById("welcome-page");
   welcomePage.classList.add("hide");
   showQuestion();
 }
@@ -69,7 +72,18 @@ function startQuiz() {
 // after user answers question, if correct screen will say "correct" and move onto next question
 // after user answers question, if incorrect screen will say "incorrect", move onto next qusestion, AND 10 seconds will subtract from timer
 function showQuestion() {
-  for (var i = 0; i < questions.length; i++) {}
+  var questionContainerElement = document.getElementById("question-container");
+  questionContainerElement.classList.remove("hide");
+
+  //create variables for each question object in the questions array to display and save answer user selects
+  var questionOne = questions[0].question;
+  console.log(questionOne);
+
+
+  //check if the user's choice is equal to questions[0].correctChoice, and by that we can know if they got the right answer or not
+  for (var i = 0; i < questions.length; i++) {
+    console.log(questions[i]);
+  }
 }
 
 // when all questions are answered OR timer reaches 0, the game will end
