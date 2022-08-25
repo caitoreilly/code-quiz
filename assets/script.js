@@ -26,6 +26,15 @@ var highScoreElement = document.getElementById("high-score");
 // create variable for question container div (which holds the question & answer choice buttons)
 var questionContainerElement = document.getElementById("question-container");
 
+//create timer variable
+var timerElement = document.getElementById("time-remaining");
+
+//create variable for next step div in HTML (this is for after user submits name/score when quiz ends)
+var nextStepElement = document.getElementById("next-step");
+
+//create variable for submit button at end of quiz
+var submitButton = document.getElementById("submit");
+
 // create array of question objects for each question with answers choices & correct answer
 const questions = [
   {
@@ -84,6 +93,7 @@ function startQuiz() {
   // every time someone clicks start quiz button, it takes index down to 0
   questionIndex = 0;
   showQuestion();
+  timerCountdown();
 }
 
 // first question pops up
@@ -121,6 +131,23 @@ function checkAnswer(event) {
   }
 }
 
+function timerCountdown() {
+  // set amount of time on the timer at beginning of quiz
+  var timeLeft = 60;
+  // setInterval() method used to call a function to be executed every 1000 milliseconds (aka every second)
+  // if amount of time left is greater than 1, show the time left in the timer div in HTML & time decrements by one second at a time
+  // otherwise once time runs out, make empty string so nothing shows for time, clearInterval method will stop timer & end game
+  var timeInterval = setInterval(function () {
+    if (timeLeft > 1) {
+      timerElement.textContent = timeLeft;
+      timeLeft--;
+    } else {
+      timerElement.textContent = "";
+      clearInterval(timeInterval);
+      endGame();
+    }
+  }, 1000);
+}
 // when all questions are answered OR timer reaches 0, the game will end
 // when game ends, user saves initials and score. User types in name and clicks submit
 // created div in HTML for high score & created variable for it. using it now here in the function.
@@ -129,6 +156,13 @@ function endGame() {
   questionContainerElement.classList.add("hide");
   highScoreElement.classList.remove("hide");
 }
+
+// user types name in input box and submits by clicking button & using event listener
+function nextSteps() {
+  highScoreElement.classList.add("hide");
+  //add buttons for go back and clear high scores here ... also need to add local storage somewhere in here
+}
+
 // after user answers question, if incorrect screen will say "incorrect", move onto next qusestion, AND 10 seconds will subtract from timer
 
 // user can see high scores saved
@@ -139,3 +173,9 @@ startButton.addEventListener("click", startQuiz);
 
 // Add event listener for answer buttons
 answerButtonsElement.addEventListener("click", checkAnswer);
+
+// Add event listener for user to submit name for high score
+submitButton.addEventListener("click", nextSteps);
+
+// Add event listener to click "go back" to home page after quiz
+// Add event listener to  "clear high scores" after quiz
