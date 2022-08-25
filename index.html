@@ -42,13 +42,19 @@
         </div>
       </div>
       <div id="high-score" class="hide">
+        <h2>All done!</h4>
+        <h3 id="final-score-message">Your final score is</h3>
+        <h3 id="final-score"></h3>
         <h4>Please enter your initials.</h4>
-        <input type="text">
+        <input type="text" name="initials" id="initials">
         <button id="submit">Submit</button>
       </div>
+      
       <div id="next-step" class="hide">
-        <button>Go back</button>
-        <button>Clear high scores</button>
+        <h2>High Scores:</h2>
+        <ul id="high-scores-list"></ul>
+        <button id="go-back">Go back</button>
+        <button id="clear-scores">Clear high scores</button>
       </div>
     </div>
     <script src="./assets/script.js"></script>
