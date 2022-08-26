@@ -43,6 +43,8 @@ var finalScoreMessageElement = document.getElementById("final-score-message");
 // create variable to save actual final score after quiz is over
 var finalScoreElement = document.getElementById("final-score");
 
+var finalUserScore;
+
 //create variable for initials input
 var initialsInput = document.getElementById("initials");
 
@@ -170,7 +172,7 @@ function checkAnswer(event) {
     if (questionIndex >= questions.length) {
       endGame();
       clearInterval(timeInterval);
-      finalScoreElement.textContent = timeLeft;
+      finalScoreElement.textContent = finalUserScore;
       // finalScoreElement.setAttribute("final-score", timeLeft);
     } else {
       showQuestion();
@@ -188,12 +190,14 @@ function endGame() {
   nextStepElement.classList.add("hide");
 }
 
+// create global variable to get data (hold scores)
+var highScores = [];
 // user types name in input box and submits by clicking submitButton & using event listener to send it to nextSteps function.
 //this saves name & score
 
 // create save scores function and "get" data aka scores from localStore
 // this page comes after user submits initials, and the user can see high scores saved
-// // create object array to store user initials & save to localStorage
+// create object array to store user initials & save to localStorage
 // then parse data (scores) into an array of objects.
 // we parse b/c data is in a string, we need it back in an array of objects
 var saveScores = function (event) {
@@ -204,8 +208,13 @@ var saveScores = function (event) {
     finalScore: timeLeft,
   };
 
+  // array variable is parsed - get value from userInfo and then push (add) to userInfo
+  highScores = JSON.parse(localStorage.getItem("userInfo"));
+  highScores.push(userInfo);
+
   // make new variable - converting data into readable string with stringify (pass in the object) & then save to localStorage
-  var userInfoStr = JSON.stringify(userInfo);
+  // setItem (name/key, value) --> this sets the value
+  var userInfoStr = JSON.stringify(highScores);
   localStorage.setItem("userInfo", userInfoStr);
 
   // to get object & use it, reverse the effect, make new variable and get object - still a string tho. So convert back into object with parse
@@ -223,8 +232,6 @@ var saveScores = function (event) {
 
 var loadScores = function () {
   console.log("here are the scores");
-
-  highScoreElement.textContent = userInfo.length;
 };
 
 //add buttons for "go back" and "clear high scores" here - something w/ local storage?
