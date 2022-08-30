@@ -26,7 +26,7 @@ My project was created with:
 
 This image represents the saved high scores in local storage and then printed to the webpage.
 
-![Code Quiz](/assets/high-scores-image.png)
+![Code Quiz](/assets/high%20scores%20image.png)
 
 ##### Sources
 
