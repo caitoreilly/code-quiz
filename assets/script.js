@@ -19,11 +19,19 @@ var answerFourElement = document.getElementById("answer-four");
 // create variable for answer button answer choices div
 var answerButtonsElement = document.getElementById("answer-buttons");
 
+var answerStatusElement = document.getElementById("answer-status");
+
 // create variable for question index - ongoing index we have to keep track of
 var questionIndex;
 
 //create variable for high score div in HTML
 var highScoreElement = document.getElementById("high-score");
+
+//create variable for div containing final score message to user
+var allDoneMessageElement = document.getElementById("all-done-message");
+
+//create variable for div containing box and submit button for user initials
+var initialsBoxElement = document.getElementById("initials-box");
 
 // create variable for question container div (which holds the question & answer choice buttons)
 var questionContainerElement = document.getElementById("question-container");
@@ -43,6 +51,8 @@ var finalScoreMessageElement = document.getElementById("final-score-message");
 // create variable to save actual final score after quiz is over
 var finalScoreElement = document.getElementById("final-score");
 
+var highScoresListElement = document.getElementById("high-scores-list");
+
 var finalUserScore;
 
 //create variable for initials input
@@ -56,6 +66,7 @@ var clearScoresButton = document.getElementById("clear-scores");
 
 //create variable for high scores list after user submits initials
 var highScoresListElement = document.getElementById("high-scores-list");
+
 
 // create array of question objects for each question with answers choices & correct answer
 const questions = [
@@ -156,10 +167,11 @@ function timerCountdown() {
 // if correct screen will say "correct" and move onto next question
 function checkAnswer(event) {
   console.log(event);
+
   if (event.target.className == "btn") {
     if (event.target.textContent == questions[questionIndex].correctChoice) {
       console.log("correct");
-      //add the word correct on the screen
+      // add the word correct on the screen
     } else {
       console.log("incorrect");
       timeLeft -= 10;
@@ -213,7 +225,8 @@ var saveScores = function (event) {
 
   // array variable is parsed - get value from highScores and then push (add) to userInfo
   // get past users scores & add current users to the list
-  highScores = JSON.parse(localStorage.getItem("userInfo"));
+  // set array to empty if nothing in localStorage so it does not get returned undefined
+  highScores = JSON.parse(localStorage.getItem("userInfo")) || [];
   highScores.push(userInfo);
 
   // make new variable - converting data into readable string with stringify (pass in the object) & then save to localStorage
@@ -223,6 +236,8 @@ var saveScores = function (event) {
 
   // to get object & use it, reverse the effect, make new variable and get object - still a string tho. So convert back into object with parse
   // convert string back into object
+  // var userInfoObj = JSON.parse(localStorage.getItem("highScores"));
+  // console.log(userInfoObj);
 
   // sort through the highScores array to show all of the users' scores & names -- run updateScores funtion for updated user scores/names
   console.log(highScores);
@@ -232,7 +247,7 @@ var saveScores = function (event) {
     updateScores(highScores[i]);
   }
 
-  updateScores();
+  // updateScores();
 };
 
 //new function to create list items and then div to hold info & add to list
@@ -241,29 +256,19 @@ var updateScores = function (user) {
   console.log(user);
   var listItem = document.createElement("li");
   listItem.className = "list-item";
-  listItem.textContent = user.initials + user.finalScore;
-
-  // create div to hold user info & score info
-  var scoreListInfo = document.createElement("div");
-  scoreListInfo.className = "score-list-info";
-  scoreListInfo.innerHTML =
-    "<h3 class='initials'>" +
-    // userInfo.initialsInput.value +
-    "</h3><span class='final-score'>" +
-    // userInfo.finalScore +
-    "</span>";
+  listItem.textContent = "User: " + user.initials +", Score: " + user.finalScore;
+  listItem.textContent = `User: ${user.initials}, Score: ${user.finalScore}`
 
   // add entire item to list
-  listItem.appendChild(scoreListInfo);
-  finalScoreElement.appendChild(listItem);
+  highScoresListElement.appendChild(listItem);
 
-  // nextSteps();
+  nextSteps();
 };
 
 //add buttons for "go back" and "clear high scores" here - something w/ local storage?
 function nextSteps() {
-  highScoreElement.classList.add("hide");
   nextStepElement.classList.remove("hide");
+  highScoreElement.classList.add("hide");
 }
 
 var welcomeScreen = function () {
@@ -273,6 +278,10 @@ var welcomeScreen = function () {
   highScoreElement.classList.add("hide");
   nextStepElement.classList.add("hide");
   timeLeft = 60;
+};
+
+var clearScores = function (){
+highScoresListElement.classList.add("hide");
 };
 
 // Add event listener to activate Start Quiz button (startButton) by going into the startQuiz function
@@ -287,4 +296,4 @@ submitButton.addEventListener("click", saveScores);
 goBackButton.addEventListener("click", welcomeScreen);
 
 // Add event listener to  "clear high scores" after quiz
-// clearScoresButton.addEventListener("click", "");
+clearScoresButton.addEventListener("click", clearScores);
